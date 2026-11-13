@@ -1,0 +1,8 @@
+# Only index.html and img/ are published.
+# Full-size originals stay local.
+/*.png
+/*.jpg
+/*.jpeg
+/*.mp4
+# Local preview tooling
+.claude/

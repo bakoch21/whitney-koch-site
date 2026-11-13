@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Whitney Koch — Watercolor &amp; Pencil Artist</title>
+<meta name="description" content="Whitney Koch is a Texas watercolor and pencil artist — nature paintings, tree studies, and hand-painted heirloom ornaments. Originals and commissions.">
+<meta name="theme-color" content="#F1EFEA">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Whitney Koch — Watercolor &amp; Pencil Artist">
+<meta property="og:description" content="Nature paintings, tree studies, and hand-painted heirloom ornaments. Originals and commissions.">
+<meta property="og:image" content="img/painting.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%232E3B2C'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Georgia,serif' font-weight='700' font-size='27' fill='%23F1EFEA'%3EWK%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,800..900&family=Instrument+Sans:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,800..900&family=Instrument+Sans:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#F1EFEA; --ink:#222323; --mist:#898789; --slate:#8F919F; --taupe:#978E86;
+  --meadow:#A9AC8D; --pine:#2E3B2C; --rust:#A4553F;
+  --paper-2:#E8E5DD;
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
+  --ui:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --gut:clamp(20px,4vw,56px);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--ui);font-size:14px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--rust);outline-offset:4px;border-radius:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.tiny{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500}
+
+/* paper grain */
+.grain{position:fixed;inset:0;z-index:100;pointer-events:none;opacity:.42;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .19 0 0 0 0 .17 0 0 0 .5 -.14'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ───────── HERO ───────── */
+.hero{position:relative;height:100vh;height:100svh;min-height:520px;overflow:hidden;
+  display:grid;place-items:center;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.hero__mark{margin:0;text-align:center;font-family:var(--display);font-weight:900;
+  font-size:min(17.5vw,34svh);line-height:.84;letter-spacing:-.045em;text-transform:uppercase;
+  font-kerning:none;color:var(--ink);position:relative;z-index:1}
+.hero__mark .row{display:block}
+.hero__mark .line{display:inline-block;white-space:nowrap}
+.hero__mark .bl{display:inline-block;width:0;height:0}
+.hero.gl .hero__mark{color:transparent}
+#trail{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;opacity:0;transition:opacity .8s ease}
+.hero.gl #trail{opacity:1}
+.hero__center{display:grid;justify-items:center;gap:clamp(18px,3.2svh,34px);transform:translateY(-1svh)}
+.hero__tag{margin:0;position:relative;z-index:3;color:var(--ink);font-size:13px;letter-spacing:.3em;text-align:center}
+.hero__tag .tagline{display:inline-block;margin-left:.3em;white-space:nowrap;font-kerning:none}
+.hero__tag .bl{display:inline-block;width:0;height:0}
+.hero.gl .hero__tag{color:transparent}
+.corner{position:absolute;z-index:3;padding:var(--gut);color:var(--ink)}
+.corner--tl{top:0;left:0;font-family:var(--display);font-weight:900;font-size:17px;letter-spacing:-.03em;line-height:1}
+.corner--tr{top:0;right:0}
+.corner--bl{bottom:0;left:0;display:flex;align-items:center;gap:10px}
+.corner--br{bottom:0;right:0;color:var(--mist)}
+.corner--bl i{display:block;width:1px;height:26px;background:var(--ink);transform-origin:top;animation:drip 2.6s var(--ease) infinite}
+@keyframes drip{0%{transform:scaleY(0)}55%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+.link{position:relative;padding-bottom:3px}
+.link::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:currentColor;
+  transform-origin:right;transition:transform .7s var(--ease)}
+.link:hover::after{transform:scaleX(0);transform-origin:left}
+
+/* ───────── SKETCH → COLOR ───────── */
+.sketch{position:relative;height:150svh}
+.sketch__stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:grid;place-items:center}
+.easel{position:relative;width:min(84vw,58svh);aspect-ratio:1/1;background:var(--paper)}
+#oak{mix-blend-mode:multiply;filter:grayscale(1) brightness(1.32) contrast(1.12);
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 9%,#000 93%,transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 9%,#000 93%,transparent 100%)}
+.easel img,.easel svg{position:relative;z-index:2;width:100%;height:100%;object-fit:contain}
+.wash{position:absolute;z-index:1;border-radius:50%;mix-blend-mode:multiply;opacity:.7;will-change:transform,opacity}
+/* each wash is pre-rendered once as an SVG image (see JS), so scrolling only moves cached pixels */
+.wash i{display:block;width:100%;height:100%;background:no-repeat center/100% 100%}
+.wash--1{width:92%;height:78%;left:4%;top:2%}
+.wash--2{width:70%;height:62%;left:-14%;top:26%;opacity:.55}
+.wash--3{width:62%;height:56%;right:-12%;top:8%;opacity:.5}
+.wash--4{width:46%;height:40%;right:2%;bottom:6%;opacity:.55}
+.wash--5{width:110%;height:26%;left:-5%;bottom:-4%;opacity:.5}
+.sketch__line{position:absolute;left:0;right:0;bottom:clamp(40px,9svh,96px);margin:0;padding:0 var(--gut);text-align:center;z-index:3;
+  font-family:var(--display);font-weight:800;font-size:clamp(28px,6.2vw,76px);line-height:1;letter-spacing:-.035em}
+.sketch__no{position:absolute;top:var(--gut);left:var(--gut);color:var(--mist);z-index:3}
+
+/* ───────── WORK ───────── */
+.work{padding:clamp(90px,16vw,220px) var(--gut) clamp(100px,16vw,240px)}
+.work__head{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid rgba(137,135,137,.45);
+  padding-top:14px;margin-bottom:clamp(64px,11vw,160px);color:var(--mist)}
+.piece{margin:0 0 clamp(110px,17vw,260px)}
+.piece:last-child{margin-bottom:0}
+.frame{position:relative;overflow:hidden;background:var(--paper-2)}
+.frame .media{position:absolute;inset:-8% 0;will-change:transform}
+.frame img{width:100%;height:100%;object-fit:cover}
+.piece--paint .frame{aspect-ratio:3/4}
+.piece--draw .frame{aspect-ratio:4/3.3}
+/* drawing photo: drop the beige cast, lift the paper to white, then multiply onto an even paper tone */
+.piece--draw .media{inset:0;background:var(--paper-2)}
+.piece--draw .media img{object-fit:contain;object-position:50% 100%;mix-blend-mode:multiply;filter:grayscale(1) brightness(1.32) contrast(1.12)}
+.piece figcaption{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin-bottom:clamp(24px,3vw,40px);align-items:baseline}
+.piece .piece__note{margin:18px 0 0;max-width:34ch;color:var(--mist)}
+.piece .no{color:var(--rust)}
+.piece h3{margin:0;font-family:var(--display);font-weight:800;font-size:clamp(34px,6vw,84px);letter-spacing:-.04em;line-height:.95}
+.piece p{grid-column:2;margin:6px 0 0;max-width:34ch;color:var(--mist)}
+.work__more{border-top:1px solid rgba(137,135,137,.45);padding-top:clamp(28px,4vw,48px);display:grid;gap:clamp(22px,3vw,36px)}
+.work__more p{margin:0;max-width:24ch;font-family:var(--display);font-weight:800;font-size:clamp(26px,3.6vw,48px);line-height:1.05;letter-spacing:-.03em}
+.work__links{display:flex;flex-wrap:wrap;gap:12px 32px}
+/* placeholders */
+.ph{position:absolute;inset:0;display:grid;place-items:center;color:var(--mist);
+  background:
+    radial-gradient(60% 50% at 28% 30%,rgba(169,172,141,.38),transparent 70%),
+    radial-gradient(55% 45% at 74% 68%,rgba(143,145,159,.3),transparent 72%),
+    radial-gradient(40% 35% at 60% 22%,rgba(164,85,63,.1),transparent 70%),
+    var(--paper-2)}
+.ph span{font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:0 12px;text-align:center}
+/* ornaments */
+.piece--orn figcaption{margin-bottom:clamp(28px,4vw,56px)}
+.piece--orn .piece__note{margin-top:clamp(32px,4.5vw,56px)}
+.orn-row{--pad:clamp(40px,7vw,96px);position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,4vw,64px);padding-top:var(--pad);
+  border-top:1px solid rgba(137,135,137,.45)}
+/* each ornament is a pendulum: the string runs from the rule line (pivot) to the top of the gold ring.
+   --rx / --ring = ring position measured in each image; --off = how far the ornament hangs below the row's padding */
+.orn{--off:0px;--rx:50%;--ring:3.6%;position:relative;margin-top:var(--off);mix-blend-mode:multiply;
+  transform-origin:var(--rx) calc(-1*(var(--pad) + var(--off)));animation:sway 7s ease-in-out infinite alternate}
+.orn:nth-child(2){--off:clamp(18px,4vw,70px);--rx:49.3%;--ring:10.8%;animation-duration:8.6s;animation-delay:-3s}
+.orn:nth-child(3){--off:clamp(6px,1.5vw,24px);--rx:49.8%;animation-duration:6.4s;animation-delay:-1.4s}
+.orn .disc::before{content:"";position:absolute;z-index:1;left:var(--rx);margin-left:-.5px;width:1px;background:var(--mist);
+  top:calc(-1*(var(--pad) + var(--off)));height:calc(var(--pad) + var(--off) + var(--ring) + 1px)}
+.orn .disc img{filter:brightness(1.035)}
+.js-sway .orn{animation:none;will-change:transform}
+.orn .disc{position:relative;aspect-ratio:4/5}
+.orn .disc img{width:100%;height:100%;object-fit:contain}
+.orn__name{display:block;text-align:center;margin-top:10px;color:var(--mist);font-size:9px}
+@keyframes sway{from{transform:rotate(-1.5deg)}to{transform:rotate(1.5deg)}}
+
+/* ───────── INQUIRE ───────── */
+.inquire{background:var(--pine);color:var(--paper);padding:clamp(96px,15vw,220px) var(--gut) 0}
+.inquire__grid{display:grid;gap:clamp(48px,7vw,96px);max-width:1320px;margin:0 auto}
+.inquire h2{margin:18px 0 0;font-family:var(--display);font-weight:800;font-size:clamp(44px,8.4vw,128px);line-height:.92;letter-spacing:-.045em}
+.inquire h2 em{font-style:normal;color:var(--meadow)}
+.inquire .lede{margin:28px 0 0;max-width:36ch;font-size:15px;color:rgba(241,239,234,.72)}
+.inquire .tiny{color:var(--meadow)}
+form{display:grid;gap:30px}
+.field{position:relative;display:grid;gap:6px}
+.field label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(241,239,234,.6)}
+.field input,.field select,.field textarea{width:100%;background:transparent;border:0;border-bottom:1px solid rgba(241,239,234,.32);
+  border-radius:0;color:var(--paper);font:400 17px/1.4 var(--ui);padding:8px 0 12px;appearance:none;-webkit-appearance:none;
+  transition:border-color .5s var(--ease)}
+.field textarea{resize:vertical;min-height:96px}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23F1EFEA' stroke-width='1.2'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 2px center;padding-right:24px;cursor:pointer}
+.field option{color:var(--ink);background:var(--paper)}
+.field input:hover,.field select:hover,.field textarea:hover{border-color:rgba(241,239,234,.6)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:0;border-color:var(--paper)}
+.field input:focus-visible,.field select:focus-visible,.field textarea:focus-visible{box-shadow:0 2px 0 0 var(--meadow)}
+.field [aria-invalid="true"]{border-color:#D98B74}
+.err{min-height:14px;font-size:11px;color:#E3A28E}
+.btn{justify-self:start;display:inline-flex;align-items:center;gap:14px;border:1px solid var(--paper);background:var(--paper);color:var(--pine);
+  font:500 11px/1 var(--ui);letter-spacing:.2em;text-transform:uppercase;padding:18px 28px;border-radius:999px;cursor:pointer;
+  transition:background .6s var(--ease),color .6s var(--ease)}
+.btn:hover{background:transparent;color:var(--paper)}
+.btn:focus-visible{outline-color:var(--meadow)}
+.btn[disabled]{opacity:.5;cursor:default}
+.btn i{width:18px;height:1px;background:currentColor;transition:width .6s var(--ease)}
+.btn:hover i{width:30px}
+.form-status{font-size:12px;color:#E3A28E;min-height:16px;margin:-10px 0 0}
+.thanks{font-family:var(--display);font-weight:800;font-size:clamp(30px,4.6vw,60px);line-height:1.02;letter-spacing:-.035em;margin:0;outline:0}
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 24px;max-width:1320px;margin:clamp(96px,14vw,200px) auto 0;
+  padding:18px 0 calc(22px + env(safe-area-inset-bottom));border-top:1px solid rgba(241,239,234,.2);color:rgba(241,239,234,.6)}
+footer .tiny{color:inherit;font-size:10px}
+
+/* ───────── ≥ 760 ───────── */
+@media (min-width:760px){
+  body{font-size:15px}
+  .hero__tag{font-size:15px}
+  .sketch{height:180svh}
+  .easel{width:min(60vw,66svh)}
+  .piece--paint{width:44%;margin-left:6%}
+  .piece--draw{width:66%;margin-left:auto}
+  .piece--orn .orn-row{padding-inline:6%}
+  .inquire__grid{grid-template-columns:1.1fr .9fr;align-items:start}
+  form{padding-top:14px}
+}
+@media (max-width:599px){ .sketch{height:140svh} }
+
+/* reduced motion */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .sketch{height:auto}
+  .sketch__stick{position:relative}
+  .orn,.corner--bl i{animation:none}
+  .frame .media{inset:0}
+}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<main>
+  <!-- 1 · HERO -->
+  <header class="hero" id="top">
+    <a class="corner corner--tl" href="#top" aria-label="Whitney Koch — home">WK</a>
+    <a class="corner corner--tr tiny" href="#inquire" data-scroll><span class="link">Inquire</span></a>
+    <div class="hero__center">
+      <h1 class="hero__mark" aria-label="Whitney Koch">
+        <span class="row"><span class="line">Whitney<i class="bl"></i></span></span>
+        <span class="row"><span class="line">Koch<i class="bl"></i></span></span>
+      </h1>
+      <p class="hero__tag tiny"><span class="tagline">Fine Art<i class="bl"></i></span></p>
+    </div>
+    <canvas id="trail" aria-hidden="true"></canvas>
+    <div class="corner corner--bl tiny" aria-hidden="true"><i></i>Scroll</div>
+    <div class="corner corner--br tiny">Texas</div>
+  </header>
+
+  <!-- 2 · SKETCH TO COLOR -->
+  <section class="sketch" aria-label="From sketch to color">
+    <div class="sketch__stick">
+      <span class="sketch__no tiny">Process</span>
+      <div class="easel">
+        <div class="wash wash--1"><i></i></div>
+        <div class="wash wash--2"><i></i></div>
+        <div class="wash wash--3"><i></i></div>
+        <div class="wash wash--4"><i></i></div>
+        <div class="wash wash--5"><i></i></div>
+        <!-- Tree drawing; CSS lifts the paper tone to white and multiplies it onto the page -->
+        <img id="oak" src="img/tree-drawing.jpg" width="2048" height="1536" alt="Graphite drawing of an Osage orange tree by Whitney Koch" decoding="async">
+      </div>
+      <p class="sketch__line">Every piece starts with a line.</p>
+    </div>
+  </section>
+
+  <!-- 3 · THE WORK -->
+  <section class="work" id="work" aria-labelledby="work-h">
+    <div class="work__head"><h2 class="tiny" id="work-h" style="margin:0">Selected Work</h2><span class="tiny">A small selection</span></div>
+
+    <figure class="piece piece--orn">
+      <figcaption><span class="no tiny">01</span><h3>Ornaments</h3></figcaption>
+      <div class="orn-row">
+        <!-- Ornaments — product shots on white (4:5); the white drops out onto the paper via multiply -->
+        <div class="orn"><div class="disc"><img data-reveal-round src="img/ornament-blue-angel.jpg" width="1122" height="1402" alt="Hand-painted blue angel ornament with white and gold wings" loading="lazy" decoding="async"></div><span class="orn__name tiny">Blue Angel</span></div>
+        <div class="orn"><div class="disc"><img data-reveal-round src="img/ornament-blue-christmas.jpg" width="1098" height="1433" alt="Hand-painted blue Christmas ornament with a white tree and ribbon" loading="lazy" decoding="async"></div><span class="orn__name tiny">Blue Christmas</span></div>
+        <div class="orn"><div class="disc"><img data-reveal-round src="img/ornament-holly-berry.jpg" width="1122" height="1402" alt="Hand-painted cream ornament with holly leaves and red berries" loading="lazy" decoding="async"></div><span class="orn__name tiny">Holly Berry</span></div>
+      </div>
+      <p class="piece__note">Hand-painted each year in small numbers. Made to be kept, and handed down.</p>
+    </figure>
+
+    <figure class="piece piece--paint">
+      <figcaption><span class="no tiny">02</span><h3>Paintings</h3></figcaption>
+      <div class="frame" data-reveal>
+        <div class="media" data-parallax>
+          <!-- Paintings — portrait 3:4 (web copy of painting.jpeg) -->
+          <img src="img/painting.jpg" width="1500" height="2000" alt="Monochrome watercolor of pines on a misty lakeshore, a fogged treeline behind and birds overhead" loading="lazy" decoding="async" data-fallback="Painting — image coming soon">
+        </div>
+      </div>
+      <p class="piece__note">Watercolor landscapes — treelines, still water, and weather, painted from life and memory.</p>
+    </figure>
+
+    <figure class="piece piece--draw">
+      <figcaption><span class="no tiny">03</span><h3>Drawings</h3></figcaption>
+      <div class="frame" data-reveal>
+        <div class="media">
+          <!-- Drawings — whole drawing shown uncropped, with a little paper above the canopy (web copy of tree_drawing.png) -->
+          <img src="img/tree-drawing.jpg" width="2048" height="1536" alt="Graphite drawing of a broad Osage orange tree with a small wooden sign at its base" loading="lazy" decoding="async" data-fallback="Drawing — image coming soon">
+        </div>
+      </div>
+      <p class="piece__note">Graphite tree studies — each one drawn leaf by leaf, as it stands.</p>
+    </figure>
+
+    <div class="work__more">
+      <p>A small selection of recent pieces. Originals, commissions and more of the work on request.</p>
+      <div class="work__links tiny">
+        <a href="#inquire" data-scroll><span class="link">Inquire</span></a>      </div>
+    </div>
+  </section>
+
+  <!-- 4 · INQUIRE -->
+  <section class="inquire" id="inquire" aria-labelledby="inq-h">
+    <div class="inquire__grid">
+      <div>
+        <span class="tiny">Inquire</span>
+        <h2 id="inq-h">Commissions <em>&amp;</em> inquiries</h2>
+        <p class="lede">Interested in an original, a commission, or this year's ornaments? Leave a note.</p>
+      </div>
+      <div>
+        <!-- SWAP: replace YOUR_ID with your Formspree form id -->
+        <form id="form" action="https://formspree.io/f/YOUR_ID" method="POST" novalidate>
+          <div class="field">
+            <label for="f-name">Name</label>
+            <input id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="e-name">
+            <span class="err" id="e-name" aria-live="polite"></span>
+          </div>
+          <div class="field">
+            <label for="f-email">Email</label>
+            <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="e-email">
+            <span class="err" id="e-email" aria-live="polite"></span>
+          </div>
+          <div class="field">
+            <label for="f-interest">Interest</label>
+            <select id="f-interest" name="interest">
+              <option>Original painting</option>
+              <option>Drawing</option>
+              <option>Ornaments</option>
+              <option>Commission</option>
+              <option>Other</option>
+            </select>
+            <span class="err"></span>
+          </div>
+          <div class="field">
+            <label for="f-msg">Message</label>
+            <textarea id="f-msg" name="message" rows="3" required aria-describedby="e-msg"></textarea>
+            <span class="err" id="e-msg" aria-live="polite"></span>
+          </div>
+          <p class="form-status" id="status" role="alert"></p>
+          <button class="btn" type="submit">Send note <i aria-hidden="true"></i></button>
+        </form>
+        <p class="thanks" id="thanks" tabindex="-1" hidden>Thank you — Whitney will be in touch.</p>
+      </div>
+    </div>
+
+    <!-- 5 · FOOTER -->
+    <footer>
+      <span class="tiny">Whitney Koch</span>
+      <span class="tiny">© <span id="yr">2026</span></span>    </footer>
+  </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+'use strict';
+var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var $=function(s,c){return (c||document).querySelector(s)}, $$=function(s,c){return [].slice.call((c||document).querySelectorAll(s))};
+$('#yr').textContent=new Date().getFullYear();
+
+/* ───────── image fallbacks ───────── */
+$$('img[data-fallback]').forEach(function(img){
+  var fb=function(){var d=document.createElement('div');d.className='ph';d.setAttribute('role','img');d.setAttribute('aria-label',img.dataset.fallback);
+    d.innerHTML='<span>Image coming soon</span>';img.replaceWith(d)};
+  if(img.complete&&!img.naturalWidth)fb(); else img.addEventListener('error',fb);
+});
+(function(){ // oak sketch fallback: a quiet generated pencil tree until the PNG is in place
+  var img=$('#oak'); if(!img)return;
+  var fb=function(){
+    var s=7, rnd=function(){s=(s*16807)%2147483647;return s/2147483647}, p='';
+    (function br(x,y,a,l,w,d){
+      var x2=x+Math.cos(a)*l,y2=y+Math.sin(a)*l,mx=(x+x2)/2+(rnd()-.5)*l*.18,my=(y+y2)/2+(rnd()-.5)*l*.18;
+      p+='<path d="M'+x.toFixed(1)+' '+y.toFixed(1)+'Q'+mx.toFixed(1)+' '+my.toFixed(1)+' '+x2.toFixed(1)+' '+y2.toFixed(1)+'" stroke-width="'+w.toFixed(2)+'" opacity="'+(.55+rnd()*.4).toFixed(2)+'"/>';
+      if(d<=0)return; var n=d>4?2:(rnd()>.35?3:2);
+      for(var i=0;i<n;i++)br(x2,y2,a+(i-(n-1)/2)*(.5+rnd()*.35)+(rnd()-.5)*.3,l*(.66+rnd()*.16),Math.max(.5,w*.62),d-1);
+    })(200,345,-Math.PI/2,74,7,7);
+    for(var i=0;i<14;i++){var gx=90+rnd()*220;p+='<path d="M'+gx+' '+(346+rnd()*8)+'l'+(14+rnd()*30)+' '+(rnd()*3-1.5)+'" stroke-width=".8" opacity=".5"/>'}
+    var d=document.createElement('div');d.style.cssText='position:relative;z-index:2;width:100%;height:100%';
+    d.innerHTML='<svg viewBox="0 0 400 400" role="img" aria-label="Pencil sketch of an oak tree (placeholder)" fill="none" stroke="#3b3a39" stroke-linecap="round">'+p+'</svg>';
+    img.replaceWith(d);
+  };
+  if(img.complete&&!img.naturalWidth)fb(); else img.addEventListener('error',fb);
+})();
+
+/* ───────── HERO · watercolor trail (WebGL) ───────── */
+(function(){
+  var hero=$('.hero'), cv=$('#trail'), mark=$('.hero__mark');
+  var gl=null; try{gl=cv.getContext('webgl',{alpha:true,premultipliedAlpha:true,antialias:false})}catch(e){}
+  if(!gl)return;
+  var VS='attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;gl_Position=vec4(p,0.,1.);}';
+  var FS=[
+  'precision highp float;varying vec2 v;',
+  'uniform sampler2D uM,uG,uT,uP;uniform float uTime,uHasP,uPA;uniform vec2 uRes;',
+  'const vec3 paper=vec3(.945,.937,.918),ink=vec3(.133,.137,.137),mist=vec3(.537,.529,.537);',
+  'const vec3 c0=vec3(.663,.675,.553),c1=vec3(.561,.569,.624),c2=vec3(.18,.231,.173),c3=vec3(.643,.333,.247);',
+  'float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
+  'float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1.,0.)),f.x),mix(h(i+vec2(0.,1.)),h(i+vec2(1.,1.)),f.x),f.y);}',
+  'float fbm(vec2 p){float a=.5,s=0.;for(int i=0;i<3;i++){s+=a*n(p);p=p*2.03+7.1;a*=.5;}return s/.875;}',
+  'vec3 pal(float t){t=fract(t)*4.;float f=smoothstep(0.,1.,fract(t));',
+  ' if(t<1.)return mix(c0,c1,f);if(t<2.)return mix(c1,c2,f);if(t<3.)return mix(c2,c3,f);return mix(c3,c0,f);}',
+  'void main(){',
+  ' float t=texture2D(uT,v).a;',
+  ' float m0=texture2D(uM,v).a,g0=texture2D(uG,v).a;',
+  ' if(m0+g0<.004){gl_FragColor=vec4(ink*t,t);return;}',
+  ' vec2 asp=vec2(uRes.x/uRes.y,1.);vec2 p=v*asp;',
+  ' float n1=fbm(p*2.6+uTime*.025);',
+  ' float n2=fbm(p*13.+3.);float n2b=fbm(p*13.+31.7);',
+  ' float n3=n(p*uRes.y*.16);',
+  ' vec2 d=(vec2(n2,n2b)-.5)*.045;d.x/=asp.x;',
+  ' float m=texture2D(uM,v+d).a;float g=texture2D(uG,v+d*.7).a;',
+  ' float mm=m+(n2-.5)*.16+(n3-.5)*.035;',
+  ' float a=smoothstep(.2,.36,mm);',
+  ' float pool=a*(1.-smoothstep(.36,.62,mm));',
+  ' vec3 w=pal(uTime*.055+n1*.85+v.x*.22);',
+  ' vec3 w2=pal(uTime*.055+.27+n2*.45);',
+  ' vec3 col=mix(w,w2,n1*.55);',
+  ' col=mix(col,paper,.04+.2*n2b);col=mix(vec3(dot(col,vec3(.3,.6,.1))),col,1.25);',
+  ' if(uHasP>.5){vec2 q=v-.5;if(asp.x>uPA)q.y*=uPA/asp.x;else q.x*=asp.x/uPA;',
+  '  vec3 pc=texture2D(uP,q+.5+d*.4).rgb;col=mix(pc,pc*(col+.35),.5);col=mix(col,w,.16);}',
+  ' col*=1.-.26*pool;',
+  ' col*=.93+.14*n3;',
+  ' col=mix(paper,col,.72+.28*smoothstep(.3,.8,mm));',
+  ' a*=.97;',
+  ' float ga=smoothstep(.07,.3,g+(n2-.5)*.1)*(.15+.08*n3)*(1.-a);',
+  ' vec3 rgb=col*a+mist*ga;float al=a+ga;',
+  ' vec3 tc=mix(ink,paper,smoothstep(.0,.9,a));',
+  ' rgb=rgb*(1.-t)+tc*t;al=al*(1.-t)+t;',
+  ' gl_FragColor=vec4(rgb,al);}'].join('\n');
+  function sh(type,src){var s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);
+    if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){console.warn(gl.getShaderInfoLog(s));return null}return s}
+  var vs=sh(gl.VERTEX_SHADER,VS),fs=sh(gl.FRAGMENT_SHADER,FS); if(!vs||!fs)return;
+  var pr=gl.createProgram();gl.attachShader(pr,vs);gl.attachShader(pr,fs);gl.linkProgram(pr);
+  if(!gl.getProgramParameter(pr,gl.LINK_STATUS))return;
+  gl.useProgram(pr);
+  var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  var loc=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+  var U={};['uM','uG','uT','uP','uTime','uHasP','uPA','uRes'].forEach(function(k){U[k]=gl.getUniformLocation(pr,k)});
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
+  function tex(unit){var t=gl.createTexture();gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,t);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0,0]));return t}
+  var tM=tex(0),tG=tex(1),tT=tex(2),tP=tex(3);
+  gl.uniform1i(U.uM,0);gl.uniform1i(U.uG,1);gl.uniform1i(U.uT,2);gl.uniform1i(U.uP,3);
+  gl.uniform1f(U.uHasP,0);gl.uniform1f(U.uPA,1.5);
+  function up(unit,t,src){gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,t);
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,src)}
+
+  // painting texture (needs http(s) — on file:// the browser blocks it and we fall back to pure washes)
+  var pimg=new Image();
+  pimg.onload=function(){try{
+    var k=Math.min(1,1400/Math.max(pimg.naturalWidth,pimg.naturalHeight)),c=document.createElement('canvas');
+    c.width=Math.round(pimg.naturalWidth*k);c.height=Math.round(pimg.naturalHeight*k);c.getContext('2d').drawImage(pimg,0,0,c.width,c.height);
+    up(3,tP,c);gl.uniform1f(U.uHasP,1);gl.uniform1f(U.uPA,c.width/c.height);if(reduce)staticPaint();else wake();
+  }catch(e){gl.uniform1f(U.uHasP,0)}};
+  pimg.src='img/painting.jpg';
+
+  var S=1/3, W=0,H=0,dpr=1,R=60;
+  var mcv=document.createElement('canvas'),gcv=document.createElement('canvas'),tcv=document.createElement('canvas');
+  var mx=mcv.getContext('2d'),gx=gcv.getContext('2d'),tx=tcv.getContext('2d');
+  var spr=document.createElement('canvas');spr.width=spr.height=96;
+  (function(){var c=spr.getContext('2d'),g=c.createRadialGradient(48,48,0,48,48,48);
+    g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.45,'rgba(255,255,255,.62)');g.addColorStop(.8,'rgba(255,255,255,.14)');g.addColorStop(1,'rgba(255,255,255,0)');
+    c.fillStyle=g;c.fillRect(0,0,96,96)})();
+  function stamp(c,x,y,r,al){c.globalAlpha=al;c.drawImage(spr,(x-r)*S,(y-r)*S,2*r*S,2*r*S)}
+
+  var cy=0; // vertical center of wordmark, for the ghost brush
+  function layout(){
+    W=hero.clientWidth;H=hero.clientHeight;dpr=Math.min(window.devicePixelRatio||1,2);R=Math.max(31,Math.min(W*.054,76));
+    // fit wordmark to width
+    mark.style.fontSize='';
+    var lines=$$('.line',mark),wide=Math.max.apply(null,lines.map(function(l){return l.offsetWidth}));
+    if(wide>W*.93)mark.style.fontSize=(parseFloat(getComputedStyle(mark).fontSize)*W*.93/wide)+'px';
+    cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);gl.viewport(0,0,cv.width,cv.height);gl.uniform2f(U.uRes,cv.width,cv.height);
+    mcv.width=gcv.width=Math.ceil(W*S);mcv.height=gcv.height=Math.ceil(H*S);
+    // wordmark → texture (canvas owns the type so ink + knock-out are pixel-identical)
+    tcv.width=cv.width;tcv.height=cv.height;tx.setTransform(dpr,0,0,dpr,0,0);tx.clearRect(0,0,W,H);
+    var hr=hero.getBoundingClientRect();tx.fillStyle='#fff';tx.textBaseline='alphabetic';
+    var mr=mark.getBoundingClientRect();cy=mr.top-hr.top+mr.height/2;
+    lines.concat($$('.tagline',hero)).forEach(function(l){ // wordmark lines + tagline
+      var cs=getComputedStyle(l),ls=parseFloat(cs.letterSpacing)||0;
+      tx.font=cs.fontWeight+' '+cs.fontSize+' '+cs.fontFamily;
+      var lr=l.getBoundingClientRect(),base=$('.bl',l).getBoundingClientRect().bottom-hr.top,x=lr.left-hr.left,s=l.textContent.trim().toUpperCase();
+      for(var i=0;i<s.length;i++){tx.fillText(s[i],x,base);x+=tx.measureText(s[i]).width+ls}
+    });
+    up(2,tT,tcv);
+    hero.classList.add('gl');
+    if(reduce)staticPaint();else{draw(performance.now());wake()}
+  }
+  function draw(now){up(0,tM,mcv);up(1,tG,gcv);gl.uniform1f(U.uTime,now/1000+40);
+    gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
+
+  function brushPath(u){return {x:W*(.06+.88*u),y:cy+Math.sin(u*Math.PI*2-.4)*Math.min(H*.13,W*.16)-Math.cos(u*Math.PI)*H*.02}}
+  function staticPaint(){ // reduced motion: one still stroke, no loop
+    mx.clearRect(0,0,mcv.width,mcv.height);gx.clearRect(0,0,gcv.width,gcv.height);
+    for(var i=0;i<=90;i++){var p=brushPath(i/90),r=R*(1.5+Math.sin(i*.21)*.35);stamp(mx,p.x,p.y,r*1.7,.5);stamp(gx,p.x,p.y,r*2.3,.35)}
+    draw(0);
+  }
+
+  var raf=0,last=0,lastActive=0,visible=true,gAcc=0;
+  var tgt=null,head=null,rad=0,drops=[];
+  var ghost=null,userTook=false;
+  function wake(){lastActive=performance.now();if(!raf&&visible&&!reduce&&W&&mcv.width){last=performance.now();raf=requestAnimationFrame(frame)}}
+  function seg(x0,y0,x1,y1,dt){
+    var dx=x1-x0,dy=y1-y0,dist=Math.sqrt(dx*dx+dy*dy);if(dist<.4)return;
+    var v=dist/Math.max(dt,1), want=R*(.85+Math.min(v/1.6,1)*.75);rad+=(want-rad)*.2;
+    var step=Math.max(2,rad*.28),n=Math.ceil(dist/step);
+    for(var i=1;i<=n;i++){var k=i/n,x=x0+dx*k,y=y0+dy*k;stamp(mx,x,y,rad*1.65,.3);stamp(gx,x,y,rad*1.9,.2)}
+    if(v>.75&&Math.random()<Math.min(.6,v*.22)){ // flick a droplet
+      var a=Math.atan2(dy,dx)+(Math.random()-.5)*1.5,sp=v*(.35+Math.random()*.8);
+      drops.push({x:x1+Math.cos(a)*rad*.7,y:y1+Math.sin(a)*rad*.7,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,r:R*(.07+Math.random()*.15),life:1.5,t:0});
+      if(drops.length>40)drops.shift();
+    }
+    lastActive=performance.now();
+  }
+  function frame(now){
+    raf=0;var dt=Math.min(now-last,50);last=now;
+    // dissolve
+    mx.globalCompositeOperation='destination-out';mx.globalAlpha=1-Math.exp(-dt/430);mx.fillStyle='#000';mx.fillRect(0,0,mcv.width,mcv.height);
+    mx.globalCompositeOperation='source-over';
+    gAcc+=dt;if(gAcc>110){gx.globalCompositeOperation='destination-out';gx.globalAlpha=1-Math.exp(-gAcc/1500);gx.fillStyle='#000';
+      gx.fillRect(0,0,gcv.width,gcv.height);gx.globalCompositeOperation='source-over';gAcc=0}
+    // auto ghost brush
+    if(ghost){var u=(now-ghost.t0)/ghost.dur;
+      if(u>=1||userTook){ghost=null;if(!userTook)tgt=null}
+      else if(u>=0){var e=u<.5?4*u*u*u:1-Math.pow(-2*u+2,3)/2,p=brushPath(e);tgt=p;if(!head){head={x:p.x,y:p.y};rad=R}}
+      lastActive=now}
+    if(tgt&&head){var nx=head.x+(tgt.x-head.x)*.34,ny=head.y+(tgt.y-head.y)*.34;seg(head.x,head.y,nx,ny,dt);head.x=nx;head.y=ny}
+    for(var i=drops.length-1;i>=0;i--){var d=drops[i];d.t+=dt/1000;d.x+=d.vx*dt;d.y+=d.vy*dt;var f=Math.pow(.86,dt/16.7);d.vx*=f;d.vy*=f;
+      if(d.t<.45)stamp(mx,d.x,d.y,d.r*3,.5);
+      stamp(gx,d.x,d.y,d.r*3.2,d.t<.9?.6:.25);
+      if(d.t>d.life)drops.splice(i,1);else lastActive=now}
+    draw(now);
+    if(!visible)return;
+    if(now-lastActive<5200)raf=requestAnimationFrame(frame);
+    else{mx.clearRect(0,0,mcv.width,mcv.height);gx.clearRect(0,0,gcv.width,gcv.height);draw(now)}
+  }
+
+  function pos(e){var r=hero.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top}}
+  if(!reduce){
+    hero.addEventListener('pointerdown',function(e){userTook=true;var p=pos(e);tgt=p;head={x:p.x,y:p.y};rad=R*.8;wake()},{passive:true});
+    hero.addEventListener('pointermove',function(e){
+      if(e.pointerType==='touch'&&!e.isPrimary)return;
+      userTook=true;var p=pos(e);if(!tgt||!head){head={x:p.x,y:p.y};rad=R*.8}tgt=p;wake()},{passive:true});
+    var end=function(e){if(e.pointerType!=='mouse'||e.type==='pointerleave'){tgt=null;head=null}};
+    hero.addEventListener('pointerup',end,{passive:true});hero.addEventListener('pointercancel',end,{passive:true});hero.addEventListener('pointerleave',end,{passive:true});
+    if('IntersectionObserver' in window)new IntersectionObserver(function(en){visible=en[0].isIntersecting;if(visible)wake()}).observe(hero);
+  }
+  var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){if(hero.clientWidth!==W||Math.abs(hero.clientHeight-H)>80)layout()},160)});
+  var started=false;
+  function start(){if(started)return;started=true;layout();
+    if(!reduce){ghost={t0:performance.now()+650,dur:3000};wake()}}
+  if(document.fonts&&document.fonts.load){
+    document.fonts.load('900 120px Fraunces').then(function(){return document.fonts.ready}).then(start,start);setTimeout(start,2500);
+  }else start();
+})();
+
+/* ───────── ornaments · pendulum sway + gentle mouse push ───────── */
+(function(){
+  var row=$('.orn-row'); if(!row||reduce)return;
+  var orns=$$('.orn',row).map(function(el,i){return {el:el,a:0,v:0,ph:i*2.1,sp:.55+i*.11}});
+  row.classList.add('js-sway');
+  var mx=-9999,my=-9999,on=false,raf=0,last=0;
+  window.addEventListener('pointermove',function(e){if(e.pointerType==='touch')return;mx=e.clientX;my=e.clientY},{passive:true});
+  document.addEventListener('pointerleave',function(){mx=my=-9999});
+  var K=13,C=2.1,MAX=6; // spring, damping, max push in degrees
+  function tick(now){
+    raf=0;var dt=Math.min((now-last)/1000,.05);last=now;
+    var rr=row.getBoundingClientRect(),t=now/1000;
+    orns.forEach(function(o){
+      var el=o.el,w=el.offsetWidth,cx=rr.left+el.offsetLeft+w/2,cy=rr.top+el.offsetTop+w*.72;
+      var target=Math.sin(t*o.sp+o.ph)*1.5;                      // idle sway
+      var r=Math.max(w*.95,150),dx=cx-mx,dy=cy-my,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<r){var u=dx/r,f=1-d/r;target+=-MAX*Math.max(-1,Math.min(1,u*3.2))*f*(2-f)} // push away from the cursor
+      o.v+=(K*(target-o.a)-C*o.v)*dt;o.a+=o.v*dt;
+      el.style.transform='rotate('+o.a.toFixed(3)+'deg)';
+    });
+    if(on)raf=requestAnimationFrame(tick);
+  }
+  function go(v){on=v;if(on&&!raf){last=performance.now();raf=requestAnimationFrame(tick)}}
+  if('IntersectionObserver' in window)new IntersectionObserver(function(en){go(en[0].isIntersecting)},{rootMargin:'100px'}).observe(row);else go(true);
+})();
+
+/* ───────── sketch washes · baked once into SVG images (wet edge + granulation) ───────── */
+(function(){
+  // [r,g,b, center alpha, mid alpha, mid stop, fade stop]
+  var W=[[169,172,141,.95,.7,.58,.78],[143,145,159,.9,.55,.55,.78],[46,59,44,.75,.4,.52,.78],[164,85,63,.8,.4,.5,.78],[151,142,134,.85,.45,.55,.8]];
+  $$('.wash i').forEach(function(el,i){
+    var c=W[i]||W[0],col='rgb('+c[0]+','+c[1]+','+c[2]+')';
+    var svg="<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' preserveAspectRatio='none'>"+
+      "<radialGradient id='g'><stop offset='0' stop-color='"+col+"' stop-opacity='"+c[3]+"'/><stop offset='"+c[5]+"' stop-color='"+col+"' stop-opacity='"+c[4]+"'/><stop offset='"+c[6]+"' stop-color='"+col+"' stop-opacity='0'/></radialGradient>"+
+      "<filter id='f' x='-10%' y='-10%' width='120%' height='120%' color-interpolation-filters='sRGB'>"+
+      "<feTurbulence type='fractalNoise' baseFrequency='.022 .034' numOctaves='3' seed='"+(7+i*5)+"' result='n'/>"+
+      "<feDisplacementMap in='SourceGraphic' in2='n' scale='40' xChannelSelector='R' yChannelSelector='G' result='d'/>"+
+      "<feTurbulence type='fractalNoise' baseFrequency='.9' seed='3' result='gr'/>"+
+      "<feColorMatrix in='gr' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .9 .45' result='ga'/>"+
+      "<feComposite in='d' in2='ga' operator='in'/></filter>"+
+      "<rect width='200' height='200' fill='url(#g)' filter='url(#f)'/></svg>";
+    el.style.backgroundImage='url("data:image/svg+xml,'+encodeURIComponent(svg)+'")';
+  });
+})();
+
+/* ───────── anchor scroll ───────── */
+$$('[data-scroll]').forEach(function(a){a.addEventListener('click',function(e){
+  var t=$(a.getAttribute('href'));if(!t)return;e.preventDefault();
+  t.scrollIntoView({behavior:reduce?'auto':'smooth'});
+  setTimeout(function(){var f=$('#f-name');if(f)f.focus({preventScroll:true})},reduce?0:1400);
+})});
+
+/* ───────── scroll motion (GSAP) ───────── */
+function motion(){
+  if(reduce||!window.gsap||!window.ScrollTrigger)return;
+  gsap.registerPlugin(ScrollTrigger);
+  ScrollTrigger.config({ignoreMobileResize:true});
+
+  // hero intro
+  gsap.from('.corner',{opacity:0,y:8,duration:1.6,ease:'power3.out',stagger:.08,delay:.3});
+
+  // sketch → color
+  var tl=gsap.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:'.sketch',start:'top top',end:'bottom bottom',scrub:.8}});
+  $$('.wash').forEach(function(w,i){
+    var o=parseFloat(getComputedStyle(w).opacity);
+    tl.fromTo(w,{scale:.18,opacity:0,rotate:-8+i*5},{scale:1,opacity:o,rotate:0,duration:.5,ease:'power2.out'},.04+i*.11);
+  });
+  tl.fromTo('.sketch__line',{opacity:0,y:28},{opacity:1,y:0,duration:.25,ease:'power3.out'},.68)
+    .to({}, {duration:.08});
+  gsap.fromTo('.easel',{opacity:0,y:40},{opacity:1,y:0,duration:1.8,ease:'expo.out',scrollTrigger:{trigger:'.sketch',start:'top 70%'}});
+
+  // work reveals
+  $$('[data-reveal]').forEach(function(f){
+    gsap.fromTo(f,{clipPath:'inset(100% 0% 0% 0%)'},{clipPath:'inset(0% 0% 0% 0%)',duration:1.9,ease:'expo.out',scrollTrigger:{trigger:f,start:'top 88%'}});
+    var m=$('[data-parallax]',f);
+    if(m)gsap.fromTo(m,{yPercent:-6},{yPercent:6,ease:'none',scrollTrigger:{trigger:f,start:'top bottom',end:'bottom top',scrub:true}});
+  });
+  gsap.fromTo('[data-reveal-round]',{clipPath:'circle(0% at 50% 50%)'},{clipPath:'circle(75% at 50% 50%)',duration:1.9,ease:'expo.out',stagger:.16,
+    scrollTrigger:{trigger:'.orn-row',start:'top 80%'}});
+  $$('.piece__note').forEach(function(n){
+    gsap.from(n,{opacity:0,y:18,duration:1.5,ease:'power3.out',scrollTrigger:{trigger:n,start:'top 94%'}});
+  });
+  $$('.piece figcaption, .work__more, .inquire__grid > div').forEach(function(c){
+    gsap.from(c.children,{opacity:0,y:22,duration:1.5,ease:'power3.out',stagger:.09,scrollTrigger:{trigger:c,start:'top 90%'}});
+  });
+  window.addEventListener('load',function(){ScrollTrigger.refresh()});
+}
+if(window.gsap)motion();else window.addEventListener('load',motion);
+
+/* ───────── form ───────── */
+(function(){
+  var form=$('#form'),status=$('#status'),thanks=$('#thanks'),btn=$('.btn',form);
+  var rules={name:function(v){return v.trim()?'':'Please add your name.'},
+    email:function(v){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim())?'':'Please enter a valid email.'},
+    message:function(v){return v.trim().length>1?'':'Please leave a short note.'}};
+  function check(el){var r=rules[el.name];if(!r)return true;var msg=r(el.value),e=el.parentNode.querySelector('.err');
+    e.textContent=msg;el.setAttribute('aria-invalid',msg?'true':'false');return !msg}
+  $$('input,textarea',form).forEach(function(el){el.addEventListener('blur',function(){if(el.value)check(el)});
+    el.addEventListener('input',function(){if(el.getAttribute('aria-invalid')==='true')check(el)})});
+  form.addEventListener('submit',function(e){
+    e.preventDefault();status.textContent='';
+    var bad=$$('input,textarea',form).filter(function(el){return !check(el)});
+    if(bad.length){bad[0].focus();return}
+    btn.disabled=true;
+    fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}})
+      .then(function(r){if(!r.ok)throw new Error(r.status);form.hidden=true;thanks.hidden=false;thanks.focus()})
+      .catch(function(){status.textContent='Something went wrong — please try again in a moment.';btn.disabled=false});
+  });
+})();
+});
+</script>
+</body>
+</html>
