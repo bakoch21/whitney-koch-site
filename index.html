@@ -76,7 +76,7 @@ a{color:inherit;text-decoration:none}
 .sketch{position:relative;height:150svh}
 .sketch__stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:grid;place-items:center}
 .easel{position:relative;width:min(84vw,58svh);aspect-ratio:1/1;background:var(--paper)}
-#oak{mix-blend-mode:multiply;filter:grayscale(1) brightness(1.32) contrast(1.12);
+#oak{
   -webkit-mask-image:linear-gradient(to right,transparent 0,#000 9%,#000 93%,transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 9%,#000 93%,transparent 100%)}
 .easel img,.easel svg{position:relative;z-index:2;width:100%;height:100%;object-fit:contain}
 .wash{position:absolute;z-index:1;border-radius:50%;mix-blend-mode:multiply;opacity:.7;will-change:transform,opacity}
@@ -102,9 +102,9 @@ a{color:inherit;text-decoration:none}
 .frame img{width:100%;height:100%;object-fit:cover}
 .piece--paint .frame{aspect-ratio:3/4}
 .piece--draw .frame{aspect-ratio:4/3.3}
-/* drawing photo: drop the beige cast, lift the paper to white, then multiply onto an even paper tone */
+/* drawing is a transparent PNG (graphite only), shown on an even paper tone */
 .piece--draw .media{inset:0;background:var(--paper-2)}
-.piece--draw .media img{object-fit:contain;object-position:50% 100%;mix-blend-mode:multiply;filter:grayscale(1) brightness(1.32) contrast(1.12)}
+.piece--draw .media img{object-fit:contain;object-position:50% 100%}
 .piece figcaption{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin-bottom:clamp(24px,3vw,40px);align-items:baseline}
 .piece .piece__note{margin:18px 0 0;max-width:34ch;color:var(--mist)}
 .piece .no{color:var(--rust)}
@@ -128,13 +128,12 @@ a{color:inherit;text-decoration:none}
   border-top:1px solid rgba(137,135,137,.45)}
 /* each ornament is a pendulum: the string runs from the rule line (pivot) to the top of the gold ring.
    --rx / --ring = ring position measured in each image; --off = how far the ornament hangs below the row's padding */
-.orn{--off:0px;--rx:50%;--ring:3.6%;position:relative;margin-top:var(--off);mix-blend-mode:multiply;
+.orn{--off:0px;--rx:50%;--ring:3.6%;position:relative;margin-top:var(--off);
   transform-origin:var(--rx) calc(-1*(var(--pad) + var(--off)));animation:sway 7s ease-in-out infinite alternate}
 .orn:nth-child(2){--off:clamp(18px,4vw,70px);--rx:49.3%;--ring:10.8%;animation-duration:8.6s;animation-delay:-3s}
 .orn:nth-child(3){--off:clamp(6px,1.5vw,24px);--rx:49.8%;animation-duration:6.4s;animation-delay:-1.4s}
 .orn .disc::before{content:"";position:absolute;z-index:1;left:var(--rx);margin-left:-.5px;width:1px;background:var(--mist);
   top:calc(-1*(var(--pad) + var(--off)));height:calc(var(--pad) + var(--off) + var(--ring) + 1px)}
-.orn .disc img{filter:brightness(1.035)}
 .js-sway .orn{animation:none;will-change:transform}
 .orn .disc{position:relative;aspect-ratio:4/5}
 .orn .disc img{width:100%;height:100%;object-fit:contain}
@@ -231,8 +230,8 @@ footer .tiny{color:inherit;font-size:10px}
         <div class="wash wash--3"><i></i></div>
         <div class="wash wash--4"><i></i></div>
         <div class="wash wash--5"><i></i></div>
-        <!-- Tree drawing; CSS lifts the paper tone to white and multiplies it onto the page -->
-        <img id="oak" src="img/tree-drawing.jpg" width="2048" height="1536" alt="Graphite drawing of an Osage orange tree by Whitney Koch" decoding="async">
+        <!-- Tree drawing — graphite only, paper made transparent (img/tree-drawing.png) -->
+        <img id="oak" src="img/tree-drawing.png" width="1400" height="1050" alt="Graphite drawing of an Osage orange tree by Whitney Koch" decoding="async">
       </div>
       <p class="sketch__line">Every piece starts with a line.</p>
     </div>
@@ -245,10 +244,10 @@ footer .tiny{color:inherit;font-size:10px}
     <figure class="piece piece--orn">
       <figcaption><span class="no tiny">01</span><h3>Ornaments</h3></figcaption>
       <div class="orn-row">
-        <!-- Ornaments — product shots on white (4:5); the white drops out onto the paper via multiply -->
-        <div class="orn"><div class="disc"><img data-reveal-round src="img/ornament-blue-angel.jpg" width="1122" height="1402" alt="Hand-painted blue angel ornament with white and gold wings" loading="lazy" decoding="async"></div><span class="orn__name tiny">Blue Angel</span></div>
-        <div class="orn"><div class="disc"><img data-reveal-round src="img/ornament-blue-christmas.jpg" width="1098" height="1433" alt="Hand-painted blue Christmas ornament with a white tree and ribbon" loading="lazy" decoding="async"></div><span class="orn__name tiny">Blue Christmas</span></div>
-        <div class="orn"><div class="disc"><img data-reveal-round src="img/ornament-holly-berry.jpg" width="1122" height="1402" alt="Hand-painted cream ornament with holly leaves and red berries" loading="lazy" decoding="async"></div><span class="orn__name tiny">Holly Berry</span></div>
+        <!-- Ornaments — transparent PNGs (white background removed), 4:5 -->
+        <div class="orn"><div class="disc"><img data-reveal-round src="img/ornament-blue-angel.png" width="560" height="700" alt="Hand-painted blue angel ornament with white and gold wings" loading="lazy" decoding="async"></div><span class="orn__name tiny">Blue Angel</span></div>
+        <div class="orn"><div class="disc"><img data-reveal-round src="img/ornament-blue-christmas.png" width="560" height="731" alt="Hand-painted blue Christmas ornament with a white tree and ribbon" loading="lazy" decoding="async"></div><span class="orn__name tiny">Blue Christmas</span></div>
+        <div class="orn"><div class="disc"><img data-reveal-round src="img/ornament-holly-berry.png" width="560" height="700" alt="Hand-painted cream ornament with holly leaves and red berries" loading="lazy" decoding="async"></div><span class="orn__name tiny">Holly Berry</span></div>
       </div>
       <p class="piece__note">Hand-painted each year in small numbers. Made to be kept, and handed down.</p>
     </figure>
@@ -269,7 +268,7 @@ footer .tiny{color:inherit;font-size:10px}
       <div class="frame" data-reveal>
         <div class="media">
           <!-- Drawings — whole drawing shown uncropped, with a little paper above the canopy (web copy of tree_drawing.png) -->
-          <img src="img/tree-drawing.jpg" width="2048" height="1536" alt="Graphite drawing of a broad Osage orange tree with a small wooden sign at its base" loading="lazy" decoding="async" data-fallback="Drawing — image coming soon">
+          <img src="img/tree-drawing.png" width="1400" height="1050" alt="Graphite drawing of a broad Osage orange tree with a small wooden sign at its base" loading="lazy" decoding="async" data-fallback="Drawing — image coming soon">
         </div>
       </div>
       <p class="piece__note">Graphite tree studies — each one drawn leaf by leaf, as it stands.</p>
