@@ -451,11 +451,11 @@ $$('img[data-fallback]').forEach(function(img){
   function stamp(c,x,y,r,al){c.globalAlpha=al;c.drawImage(spr,(x-r)*S,(y-r)*S,2*r*S,2*r*S)}
 
   var cy=0; // vertical center of wordmark, for the ghost brush
-  // Choose which part of the painting the trail reveals: always keep the birds (and the lone one on the right) in view.
-  // On wide screens the painting spans the full width; on tall phones it's zoomed out, with washes above and below.
+  // Choose which part of the painting the trail reveals: always keep the birds and the near treeline in view.
+  // The painting is zoomed out just enough to fit both; any space left over is soft wash.
   function fitPainting(){
     if(!W||!H)return;
-    var S=W/H,A=pa,x0=.03,x1=.97,y0=.22,y1=.62;      // bird area, as fractions of the image (y from top)
+    var S=W/H,A=pa,x0=.03,x1=.97,y0=.25,y1=.86;      // birds down to the near treeline, as fractions of the image (y from top)
     var tw=(x1-x0)*A,th=y1-y0,rw,rh;                  // sizes in image-height units
     if(tw/th>S){rw=tw;rh=tw/S}else{rh=th;rw=th*S}
     if(S>=A&&rw<A){rw=A;rh=A/S}
