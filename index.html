@@ -75,18 +75,15 @@ a{color:inherit;text-decoration:none}
 /* ───────── SKETCH → COLOR ───────── */
 .sketch{position:relative;height:150svh}
 .sketch__stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:grid;place-items:center}
-.easel{position:relative;width:min(84vw,58svh);aspect-ratio:1/1;background:var(--paper)}
+.easel{position:relative;width:min(70vw,46svh);aspect-ratio:1/1}
 #oak{
   -webkit-mask-image:linear-gradient(to right,transparent 0,#000 9%,#000 93%,transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 9%,#000 93%,transparent 100%)}
 .easel img,.easel svg{position:relative;z-index:2;width:100%;height:100%;object-fit:contain}
-.wash{position:absolute;z-index:1;border-radius:50%;mix-blend-mode:multiply;opacity:.7;will-change:transform,opacity}
-/* each wash is pre-rendered once as an SVG image (see JS), so scrolling only moves cached pixels */
-.wash i{display:block;width:100%;height:100%;background:no-repeat center/100% 100%}
-.wash--1{width:92%;height:78%;left:4%;top:2%}
-.wash--2{width:70%;height:62%;left:-14%;top:26%;opacity:.55}
-.wash--3{width:62%;height:56%;right:-12%;top:8%;opacity:.5}
-.wash--4{width:46%;height:40%;right:2%;bottom:6%;opacity:.55}
-.wash--5{width:110%;height:26%;left:-5%;bottom:-4%;opacity:.5}
+/* watercolor ring around the tree — never overlaps the drawing. Pre-rendered once as an SVG image (see JS);
+   --p (0→1) is how much of the ring has been painted, driven by scroll. */
+.ring{--p:1;position:absolute;z-index:1;left:-20%;top:-27%;width:140%;height:140%;background:no-repeat center/100% 100%;will-change:transform;
+  -webkit-mask-image:conic-gradient(from -100deg at 50% 50%,transparent 0,#000 calc((1 - var(--p))*5%),#000 calc(var(--p)*108% - 8%),transparent calc(var(--p)*108%));
+  mask-image:conic-gradient(from -100deg at 50% 50%,transparent 0,#000 calc((1 - var(--p))*5%),#000 calc(var(--p)*108% - 8%),transparent calc(var(--p)*108%))}
 .sketch__line{position:absolute;left:0;right:0;bottom:clamp(40px,9svh,96px);margin:0;padding:0 var(--gut);text-align:center;z-index:3;
   font-family:var(--display);font-weight:800;font-size:clamp(28px,6.2vw,76px);line-height:1;letter-spacing:-.035em}
 .sketch__no{position:absolute;top:var(--gut);left:var(--gut);color:var(--mist);z-index:3}
@@ -181,7 +178,7 @@ footer .tiny{color:inherit;font-size:10px}
   body{font-size:15px}
   .hero__tag{font-size:15px}
   .sketch{height:180svh}
-  .easel{width:min(60vw,66svh)}
+  .easel{width:min(52vw,50svh)}
   .piece--paint{width:44%;margin-left:6%}
   .piece--draw{width:66%;margin-left:auto}
   .piece--orn .orn-row{padding-inline:6%}
@@ -225,11 +222,7 @@ footer .tiny{color:inherit;font-size:10px}
     <div class="sketch__stick">
       <span class="sketch__no tiny">Process</span>
       <div class="easel">
-        <div class="wash wash--1"><i></i></div>
-        <div class="wash wash--2"><i></i></div>
-        <div class="wash wash--3"><i></i></div>
-        <div class="wash wash--4"><i></i></div>
-        <div class="wash wash--5"><i></i></div>
+        <div class="ring" aria-hidden="true"></div>
         <!-- Tree drawing — graphite only, paper made transparent (img/tree-drawing.png) -->
         <img id="oak" src="img/tree-drawing.png" width="1400" height="1050" alt="Graphite drawing of an Osage orange tree by Whitney Koch" decoding="async">
       </div>
@@ -580,23 +573,28 @@ $$('img[data-fallback]').forEach(function(img){
   if('IntersectionObserver' in window)new IntersectionObserver(function(en){go(en[0].isIntersecting)},{rootMargin:'100px'}).observe(row);else go(true);
 })();
 
-/* ───────── sketch washes · baked once into SVG images (wet edge + granulation) ───────── */
+/* ───────── sketch ring · one brush-stroke circle, baked once into an SVG image (wet edge + granulation) ───────── */
 (function(){
-  // [r,g,b, center alpha, mid alpha, mid stop, fade stop]
-  var W=[[169,172,141,.95,.7,.58,.78],[143,145,159,.9,.55,.55,.78],[46,59,44,.75,.4,.52,.78],[164,85,63,.8,.4,.5,.78],[151,142,134,.85,.45,.55,.8]];
-  $$('.wash i').forEach(function(el,i){
-    var c=W[i]||W[0],col='rgb('+c[0]+','+c[1]+','+c[2]+')';
-    var svg="<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' preserveAspectRatio='none'>"+
-      "<radialGradient id='g'><stop offset='0' stop-color='"+col+"' stop-opacity='"+c[3]+"'/><stop offset='"+c[5]+"' stop-color='"+col+"' stop-opacity='"+c[4]+"'/><stop offset='"+c[6]+"' stop-color='"+col+"' stop-opacity='0'/></radialGradient>"+
-      "<filter id='f' x='-10%' y='-10%' width='120%' height='120%' color-interpolation-filters='sRGB'>"+
-      "<feTurbulence type='fractalNoise' baseFrequency='.022 .034' numOctaves='3' seed='"+(7+i*5)+"' result='n'/>"+
-      "<feDisplacementMap in='SourceGraphic' in2='n' scale='40' xChannelSelector='R' yChannelSelector='G' result='d'/>"+
-      "<feTurbulence type='fractalNoise' baseFrequency='.9' seed='3' result='gr'/>"+
-      "<feColorMatrix in='gr' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .9 .45' result='ga'/>"+
-      "<feComposite in='d' in2='ga' operator='in'/></filter>"+
-      "<rect width='200' height='200' fill='url(#g)' filter='url(#f)'/></svg>";
-    el.style.backgroundImage='url("data:image/svg+xml,'+encodeURIComponent(svg)+'")';
-  });
+  var el=$('.ring'); if(!el)return;
+  // overlapping strokes in the palette, blurred together, then given a wet, wobbly edge
+  var c=function(col,w,op,dash,off){return "<circle cx='200' cy='200' r='171' fill='none' stroke='"+col+"' stroke-width='"+w+"' stroke-opacity='"+op+"'"+(dash?" stroke-dasharray='"+dash+"' stroke-dashoffset='"+off+"' stroke-linecap='round'":"")+"/>"};
+  var svg="<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'>"+
+    "<filter id='f' filterUnits='userSpaceOnUse' x='0' y='0' width='400' height='400' color-interpolation-filters='sRGB'>"+
+    "<feGaussianBlur in='SourceGraphic' stdDeviation='13' result='cb'/><feComponentTransfer in='cb' result='cc'><feFuncA type='linear' slope='3'/></feComponentTransfer>"+
+    "<feGaussianBlur in='SourceAlpha' stdDeviation='3' result='sh'/><feComposite in='cc' in2='sh' operator='in' result='b'/>"+
+    "<feTurbulence type='fractalNoise' baseFrequency='.014 .019' numOctaves='3' seed='11' result='n'/>"+
+    "<feDisplacementMap in='b' in2='n' scale='24' xChannelSelector='R' yChannelSelector='G' result='d'/>"+
+    "<feTurbulence type='fractalNoise' baseFrequency='.8' seed='3' result='gr'/>"+
+    "<feColorMatrix in='gr' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .9 .5' result='ga'/>"+
+    "<feComposite in='d' in2='ga' operator='in'/></filter>"+
+    "<g filter='url(#f)'>"+
+    c('#A9AC8D',22,.85)+               // meadow, all the way round
+    c('#8F919F',27,.75,'400 674',80)+  // slate
+    c('#2E3B2C',13,.4,'210 864',640)+  // pine
+    c('#A4553F',17,.5,'130 944',930)+  // rust, a short touch
+    c('#978E86',20,.5,'240 834',380)+  // taupe
+    "</g></svg>";
+  el.style.backgroundImage='url("data:image/svg+xml,'+encodeURIComponent(svg)+'")';
 })();
 
 /* ───────── anchor scroll ───────── */
@@ -617,10 +615,8 @@ function motion(){
 
   // sketch → color
   var tl=gsap.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:'.sketch',start:'top top',end:'bottom bottom',scrub:.8}});
-  $$('.wash').forEach(function(w,i){
-    var o=parseFloat(getComputedStyle(w).opacity);
-    tl.fromTo(w,{scale:.18,opacity:0,rotate:-8+i*5},{scale:1,opacity:o,rotate:0,duration:.5,ease:'power2.out'},.04+i*.11);
-  });
+  // the ring paints itself around the tree, like one slow brush stroke
+  tl.fromTo('.ring',{'--p':0,rotate:-28,scale:.95},{'--p':1,rotate:0,scale:1,duration:.62,ease:'power1.inOut'},.03);
   tl.fromTo('.sketch__line',{opacity:0,y:28},{opacity:1,y:0,duration:.25,ease:'power3.out'},.68)
     .to({}, {duration:.08});
   gsap.fromTo('.easel',{opacity:0,y:40},{opacity:1,y:0,duration:1.8,ease:'expo.out',scrollTrigger:{trigger:'.sketch',start:'top 70%'}});
