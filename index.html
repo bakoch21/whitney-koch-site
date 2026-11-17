@@ -373,7 +373,7 @@ $$('img[data-fallback]').forEach(function(img){
   var VS='attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;gl_Position=vec4(p,0.,1.);}';
   var FS=[
   'precision highp float;varying vec2 v;',
-  'uniform sampler2D uM,uG,uT,uP;uniform float uTime,uHasP,uPA;uniform vec2 uRes;',
+  'uniform sampler2D uM,uG,uT,uP;uniform float uTime,uHasP,uPA;uniform vec2 uRes;uniform vec4 uR;',
   'const vec3 paper=vec3(.945,.937,.918),ink=vec3(.133,.137,.137),mist=vec3(.537,.529,.537);',
   'const vec3 c0=vec3(.663,.675,.553),c1=vec3(.561,.569,.624),c2=vec3(.18,.231,.173),c3=vec3(.643,.333,.247);',
   'float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
@@ -398,8 +398,10 @@ $$('img[data-fallback]').forEach(function(img){
   ' vec3 w2=pal(uTime*.055+.27+n2*.45);',
   ' vec3 col=mix(w,w2,n1*.55);',
   ' col=mix(col,paper,.04+.2*n2b);col=mix(vec3(dot(col,vec3(.3,.6,.1))),col,1.25);',
-  ' if(uHasP>.5){vec2 q=v-.5;if(asp.x>uPA)q.y*=uPA/asp.x;else q.x*=asp.x/uPA;',
-  '  vec3 pc=texture2D(uP,q+.5+d*.4).rgb;col=mix(pc,pc*(col+.35),.5);col=mix(col,w,.16);}',
+  // uR = visible part of the painting (x, y from top, width, height in image fractions); outside it, washes only
+  ' if(uHasP>.5){vec2 iu=vec2(uR.x+v.x*uR.z,uR.y+(1.-v.y)*uR.w)+d*.4;',
+  '  float e=.025+.02*n2;float inP=smoothstep(0.,e,iu.x)*smoothstep(1.,1.-e,iu.x)*smoothstep(0.,e,iu.y)*smoothstep(1.,1.-e,iu.y);',
+  '  vec3 pc=texture2D(uP,vec2(iu.x,1.-iu.y)).rgb;vec3 pm=mix(pc,pc*(col+.35),.5);pm=mix(pm,w,.16);col=mix(col,pm,inP);}',
   ' col*=1.-.26*pool;',
   ' col*=.93+.14*n3;',
   ' col=mix(paper,col,.72+.28*smoothstep(.3,.8,mm));',
@@ -418,7 +420,7 @@ $$('img[data-fallback]').forEach(function(img){
   var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
   gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
   var loc=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
-  var U={};['uM','uG','uT','uP','uTime','uHasP','uPA','uRes'].forEach(function(k){U[k]=gl.getUniformLocation(pr,k)});
+  var U={};['uM','uG','uT','uP','uTime','uHasP','uPA','uRes','uR'].forEach(function(k){U[k]=gl.getUniformLocation(pr,k)});
   gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
   function tex(unit){var t=gl.createTexture();gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,t);
     gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
@@ -426,7 +428,7 @@ $$('img[data-fallback]').forEach(function(img){
     gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0,0]));return t}
   var tM=tex(0),tG=tex(1),tT=tex(2),tP=tex(3);
   gl.uniform1i(U.uM,0);gl.uniform1i(U.uG,1);gl.uniform1i(U.uT,2);gl.uniform1i(U.uP,3);
-  gl.uniform1f(U.uHasP,0);gl.uniform1f(U.uPA,1.5);
+  gl.uniform1f(U.uHasP,0);gl.uniform1f(U.uPA,1.5);gl.uniform4f(U.uR,0,0,1,1);var pa=.75;
   function up(unit,t,src){gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,t);
     gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,src)}
 
@@ -435,7 +437,7 @@ $$('img[data-fallback]').forEach(function(img){
   pimg.onload=function(){try{
     var k=Math.min(1,1400/Math.max(pimg.naturalWidth,pimg.naturalHeight)),c=document.createElement('canvas');
     c.width=Math.round(pimg.naturalWidth*k);c.height=Math.round(pimg.naturalHeight*k);c.getContext('2d').drawImage(pimg,0,0,c.width,c.height);
-    up(3,tP,c);gl.uniform1f(U.uHasP,1);gl.uniform1f(U.uPA,c.width/c.height);if(reduce)staticPaint();else wake();
+    up(3,tP,c);gl.uniform1f(U.uHasP,1);gl.uniform1f(U.uPA,c.width/c.height);pa=c.width/c.height;fitPainting();if(reduce)staticPaint();else wake();
   }catch(e){gl.uniform1f(U.uHasP,0)}};
   pimg.src='img/painting.jpg';
 
@@ -449,13 +451,26 @@ $$('img[data-fallback]').forEach(function(img){
   function stamp(c,x,y,r,al){c.globalAlpha=al;c.drawImage(spr,(x-r)*S,(y-r)*S,2*r*S,2*r*S)}
 
   var cy=0; // vertical center of wordmark, for the ghost brush
+  // Choose which part of the painting the trail reveals: always keep the birds (and the lone one on the right) in view.
+  // On wide screens the painting spans the full width; on tall phones it's zoomed out, with washes above and below.
+  function fitPainting(){
+    if(!W||!H)return;
+    var S=W/H,A=pa,x0=.03,x1=.97,y0=.22,y1=.62;      // bird area, as fractions of the image (y from top)
+    var tw=(x1-x0)*A,th=y1-y0,rw,rh;                  // sizes in image-height units
+    if(tw/th>S){rw=tw;rh=tw/S}else{rh=th;rw=th*S}
+    if(S>=A&&rw<A){rw=A;rh=A/S}
+    var cx=(x0+x1)/2*A,cy=(y0+y1)/2;
+    cx=rw<=A?Math.min(Math.max(cx,rw/2),A-rw/2):A/2;
+    cy=rh<=1?Math.min(Math.max(cy,rh/2),1-rh/2):.5;
+    gl.uniform4f(U.uR,(cx-rw/2)/A,cy-rh/2,rw/A,rh);
+  }
   function layout(){
     W=hero.clientWidth;H=hero.clientHeight;dpr=Math.min(window.devicePixelRatio||1,2);R=Math.max(31,Math.min(W*.054,76));
     // fit wordmark to width
     mark.style.fontSize='';
     var lines=$$('.line',mark),wide=Math.max.apply(null,lines.map(function(l){return l.offsetWidth}));
     if(wide>W*.93)mark.style.fontSize=(parseFloat(getComputedStyle(mark).fontSize)*W*.93/wide)+'px';
-    cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);gl.viewport(0,0,cv.width,cv.height);gl.uniform2f(U.uRes,cv.width,cv.height);
+    cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);gl.viewport(0,0,cv.width,cv.height);gl.uniform2f(U.uRes,cv.width,cv.height);fitPainting();
     mcv.width=gcv.width=Math.ceil(W*S);mcv.height=gcv.height=Math.ceil(H*S);
     // wordmark → texture (canvas owns the type so ink + knock-out are pixel-identical)
     tcv.width=cv.width;tcv.height=cv.height;tx.setTransform(dpr,0,0,dpr,0,0);tx.clearRect(0,0,W,H);
